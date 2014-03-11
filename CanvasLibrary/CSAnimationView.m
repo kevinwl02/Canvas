@@ -11,9 +11,22 @@
 @implementation CSAnimationView
 
 - (void)awakeFromNib {
-    if (self.type && self.duration && ! self.pauseAnimationOnAwake) {
+    
+    [self setDefaultValues];
+    
+    if (!self.pause) {
         [self startCanvasAnimation];
     }
+}
+
+- (void)setDefaultValues {
+    
+    if(!self.type)
+        self.type = _defaultAnimationType;
+    if(!self.duration)
+        self.duration = _defaultDuration;
+    if(!self.delay)
+        self.delay = _defaultDelay;
 }
 
 - (void)startCanvasAnimation {
@@ -25,9 +38,37 @@
     [super startCanvasAnimation];
 }
 
+# pragma mark - Default values
+
+static CSAnimationType _defaultAnimationType = @"fadeIn";
+static NSTimeInterval _defaultDelay = 0;
+static NSTimeInterval _defaultDuration = 0.5;
+
++ (CSAnimationType) defaultAnimationType {
+    return _defaultAnimationType;
+}
++ (void) setDefaultAnimationType:(CSAnimationType)pDefaultAnimationType {
+    _defaultAnimationType = pDefaultAnimationType;
+}
+
++ (NSTimeInterval) defaultDelay {
+    return _defaultDelay;
+}
++ (void) setDefaultDelay:(NSTimeInterval)pDefaultDelay {
+    _defaultDelay = pDefaultDelay;
+}
+
++ (NSTimeInterval) defaultDuration {
+    return _defaultDuration;
+}
++ (void) setDefaultDuration:(NSTimeInterval)pDefaultDuration {
+    _defaultDuration = pDefaultDuration;
+}
+
 @end
 
 
+# pragma mark - Category
 
 @implementation UIView (CSAnimationView)
 
