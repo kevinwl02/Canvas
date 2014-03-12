@@ -1,10 +1,10 @@
-/*
- * This file is part of the Canvas package.
- * (c) Canvas <usecanvas@gmail.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+//
+//  CSMultiAnimationView.m
+//  Canvas
+//
+//  Created by Kevin on 11/03/14.
+//  Copyright (c) 2014 Kevin. All rights reserved.
+//
 
 #import "CSMultiAnimationView.h"
 #import "CSAnimationView.h"
@@ -14,6 +14,7 @@
 @property (nonatomic, strong) NSArray *typeArray;
 @property (nonatomic, strong) NSArray *delayArray;
 @property (nonatomic, strong) NSArray *durationArray;
+@property (nonatomic, strong) NSArray *distanceArray;
 @property (nonatomic) int animationIterator;
 
 @end
@@ -46,6 +47,7 @@
     [class performAnimationOnView:self
                          duration:[self getDurationForIndex:self.animationIterator]
                             delay:[self getDelayForIndex:self.animationIterator]
+                         distance:[self getDistanceForIndex:self.animationIterator]
                        onFinished:^{
         [self performAnimation];
     }];
@@ -63,6 +65,9 @@
 }
 - (void) setDuration:(NSString *)duration {
     self.durationArray = [duration componentsSeparatedByString:@";"];
+}
+- (void) setDistance:(NSString *)distance {
+    self.distanceArray = [distance componentsSeparatedByString:@";"];
 }
 
 # pragma mark - Array getters
@@ -87,6 +92,13 @@
         return CSAnimationView.defaultDuration;
     
     return [[self.durationArray objectAtIndex:index] doubleValue];
+}
+- (float) getDistanceForIndex: (int) index {
+    
+    if (!self.distanceArray || index >= self.distanceArray.count)
+        return CSAnimationView.defaultDistance;
+    
+    return [[self.distanceArray objectAtIndex:index] floatValue];
 }
 
 @end
