@@ -1050,6 +1050,7 @@ That's it!</string>
                                             <userDefinedRuntimeAttribute type="string" keyPath="duration" value="2"/>
                                             <userDefinedRuntimeAttribute type="string" keyPath="type" value="bounceLeft;shake;fadeIn"/>
                                             <userDefinedRuntimeAttribute type="boolean" keyPath="pause" value="YES"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="distance" value="70"/>
                                         </userDefinedRuntimeAttributes>
                                     </view>
                                     <view contentMode="scaleToFill" id="rfa-Ts-Vyb" customClass="CSAnimationView">
