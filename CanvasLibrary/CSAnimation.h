@@ -31,6 +31,7 @@ static CSAnimationType CSAnimationTypeFlash        = @"flash";
 static CSAnimationType CSAnimationTypeShake        = @"shake";
 static CSAnimationType CSAnimationTypeZoomIn       = @"zoomIn";
 static CSAnimationType CSAnimationTypeZoomOut      = @"zoomOut";
+static CSAnimationType CSAnimationTypeTranslate    = @"translate";
 
 extern NSString *const CSAnimationExceptionMethodNotImplemented;
 
@@ -40,6 +41,7 @@ extern NSString *const CSAnimationExceptionMethodNotImplemented;
 @property (nonatomic) NSTimeInterval delay;
 
 + (void)performAnimationOnView:(UIView *)view duration:(NSTimeInterval)duration delay:(NSTimeInterval)delay distance:(float)distance onFinished:(void (^)())animationDidFinish;
++ (void)performAnimationOnView:(UIView *)view duration:(NSTimeInterval)duration delay:(NSTimeInterval)delay distanceX:(float)distanceX distanceY:(float)distanceY onFinished:(void (^)())animationDidFinish;
 
 @end
 
