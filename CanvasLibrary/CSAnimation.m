@@ -31,7 +31,16 @@ static NSMutableDictionary *_animationClasses;
                          delay:(NSTimeInterval)delay
                       distance:(float)distance
                     onFinished:(void (^)())animationDidFinish {
-    [NSException raise:CSAnimationExceptionMethodNotImplemented format:@"+[%@ performAnimationOnView:duration:delay:] needed to be implemented", NSStringFromClass(self)];
+    [NSException raise:CSAnimationExceptionMethodNotImplemented format:@"+[%@ performAnimationOnView:duration:delay:distance:onFinished] needed to be implemented", NSStringFromClass(self)];
+}
+
++ (void)performAnimationOnView:(UIView *)view
+                      duration:(NSTimeInterval)duration
+                         delay:(NSTimeInterval)delay
+                     distanceX:(float)distanceX
+                     distanceY:(float)distanceY
+                    onFinished:(void (^)())animationDidFinish{
+    [NSException raise:CSAnimationExceptionMethodNotImplemented format:@"+[%@ performAnimationOnView:duration:delay:distanceX:distanceY:onFinished] needed to be implemented", NSStringFromClass(self)];
 }
 
 + (void)registerClass:(Class)class forAnimationType:(CSAnimationType)animationType {
@@ -543,4 +552,24 @@ static NSMutableDictionary *_animationClasses;
         animationDidFinish();
     }];
 }
+@end
+
+@interface CSTranslate : CSAnimation
+@end
+@implementation CSTranslate
+
++ (void)load {
+    [self registerClass:self forAnimationType:CSAnimationTypeTranslate];
+}
++ (void)performAnimationOnView:(UIView *)view duration:(NSTimeInterval)duration delay:(NSTimeInterval)delay distanceX:(float)distanceX distanceY:(float)distanceY onFinished:(void (^)())animationDidFinish {
+    
+    // Start
+    [UIView animateKeyframesWithDuration:duration delay:delay options:0 animations:^{
+        // End
+        view.transform = CGAffineTransformMakeTranslation(distanceX, distanceY);
+    } completion:^(BOOL finished) {
+        animationDidFinish();
+    }];
+}
+
 @end
