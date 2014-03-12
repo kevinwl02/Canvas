@@ -1048,9 +1048,9 @@ That's it!</string>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="string" keyPath="delay" value="0,1"/>
                                             <userDefinedRuntimeAttribute type="string" keyPath="duration" value="2"/>
-                                            <userDefinedRuntimeAttribute type="string" keyPath="type" value="bounceLeft;shake;fadeIn"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="type" value="bounceLeft; shake; translate; translate"/>
                                             <userDefinedRuntimeAttribute type="boolean" keyPath="pause" value="YES"/>
-                                            <userDefinedRuntimeAttribute type="string" keyPath="distance" value="70"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="distance" value="70; 0; 100:100; 0:0"/>
                                         </userDefinedRuntimeAttributes>
                                     </view>
                                     <view contentMode="scaleToFill" id="rfa-Ts-Vyb" customClass="CSAnimationView">
