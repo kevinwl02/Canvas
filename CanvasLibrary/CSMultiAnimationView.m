@@ -21,6 +21,9 @@
 
 @implementation CSMultiAnimationView
 
+NSString * const kElementSeparator = @";";
+NSString * const kSubelementSeparator = @":";
+
 - (void)awakeFromNib {
     
     if (!self.pause) {
@@ -44,13 +47,26 @@
     
     Class <CSAnimation> class = [CSAnimation classForAnimationType:[self getTypeForIndex:self.animationIterator]];
     
-    [class performAnimationOnView:self
-                         duration:[self getDurationForIndex:self.animationIterator]
-                            delay:[self getDelayForIndex:self.animationIterator]
-                         distance:[self getDistanceForIndex:self.animationIterator]
-                       onFinished:^{
-        [self performAnimation];
-    }];
+    NSArray *distance2D = [self getDistanceComponentsForIndex:self.animationIterator];
+    if (distance2D != nil) {
+        [class performAnimationOnView:self
+                             duration:[self getDurationForIndex:self.animationIterator]
+                                delay:[self getDelayForIndex:self.animationIterator]
+                             distanceX:[[distance2D objectAtIndex:0] floatValue]
+                            distanceY:[[distance2D objectAtIndex:1] floatValue]
+                           onFinished:^{
+                               [self performAnimation];
+                           }];
+    }
+    else {
+        [class performAnimationOnView:self
+                             duration:[self getDurationForIndex:self.animationIterator]
+                                delay:[self getDelayForIndex:self.animationIterator]
+                             distance:[self getDistanceForIndex:self.animationIterator]
+                           onFinished:^{
+                               [self performAnimation];
+                           }];
+    }
     
     self.animationIterator ++;
 }
@@ -58,16 +74,16 @@
 # pragma mark - Setters
 
 - (void) setType:(NSString *)type {
-    self.typeArray = [type componentsSeparatedByString:@";"];
+    self.typeArray = [[self cleanInputString: type] componentsSeparatedByString:kElementSeparator];
 }
 - (void) setDelay:(NSString *)delay {
-    self.delayArray = [delay componentsSeparatedByString:@";"];
+    self.delayArray = [delay componentsSeparatedByString:kElementSeparator];
 }
 - (void) setDuration:(NSString *)duration {
-    self.durationArray = [duration componentsSeparatedByString:@";"];
+    self.durationArray = [duration componentsSeparatedByString:kElementSeparator];
 }
 - (void) setDistance:(NSString *)distance {
-    self.distanceArray = [distance componentsSeparatedByString:@";"];
+    self.distanceArray = [distance componentsSeparatedByString:kElementSeparator];
 }
 
 # pragma mark - Array getters
@@ -98,7 +114,26 @@
     if (!self.distanceArray || index >= self.distanceArray.count)
         return CSAnimationView.defaultDistance;
     
-    return [[self.distanceArray objectAtIndex:index] floatValue];
+    NSString *distance = [self.distanceArray objectAtIndex:index];
+    return [distance floatValue];
+}
+- (NSArray *) getDistanceComponentsForIndex: (int) index {
+    if (!self.distanceArray || index >= self.distanceArray.count)
+        return nil;
+    
+    NSString *distance = [self.distanceArray objectAtIndex:index];
+    if ([distance rangeOfString:kSubelementSeparator].location == NSNotFound)
+        return nil;
+    
+    return [distance componentsSeparatedByString:kSubelementSeparator];
+}
+
+# pragma mark - String input cleaning
+
+- (NSString *) cleanInputString: (NSString*) inputString {
+    
+    inputString = [inputString stringByReplacingOccurrencesOfString:@" " withString:@""];
+    return inputString;
 }
 
 @end
