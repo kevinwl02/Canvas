@@ -9,27 +9,11 @@
 #import <UIKit/UIKit.h>
 #import "CSAnimation.h"
 
-@interface CSAnimationView : UIView
+@interface CSMultiAnimationView : UIView
 
-@property (nonatomic) NSTimeInterval delay;
-@property (nonatomic) NSTimeInterval duration;
-@property (nonatomic, copy) CSAnimationType type;
+@property (nonatomic, copy) NSString *delay;
+@property (nonatomic, copy) NSString *duration;
+@property (nonatomic, copy) NSString *type;
 @property (nonatomic) BOOL pause;  // If set, animation wont starts on awakeFromNib
-
-+ (CSAnimationType) defaultAnimationType;
-+ (void) setDefaultAnimationType: (CSAnimationType) pDefaultAnimationType;
-
-+ (NSTimeInterval) defaultDelay;
-+ (void) setDefaultDelay: (NSTimeInterval) pDefaultDelay;
-
-+ (NSTimeInterval) defaultDuration;
-+ (void) setDefaultDuration: (NSTimeInterval) pDefaultDuration;
-
-@end
-
-
-@interface UIView (CSAnimationView)
-
-- (void)startCanvasAnimation;
 
 @end

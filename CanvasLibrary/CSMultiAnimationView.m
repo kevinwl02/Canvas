@@ -6,87 +6,87 @@
  * file that was distributed with this source code.
  */
 
+#import "CSMultiAnimationView.h"
 #import "CSAnimationView.h"
 
-@interface CSAnimationView()
+@interface CSMultiAnimationView()
+
+@property (nonatomic, strong) NSArray *typeArray;
+@property (nonatomic, strong) NSArray *delayArray;
+@property (nonatomic, strong) NSArray *durationArray;
+@property (nonatomic) int animationIterator;
 
 @end
 
-@implementation CSAnimationView
+@implementation CSMultiAnimationView
 
 - (void)awakeFromNib {
-    
-    [self setDefaultValues];
     
     if (!self.pause) {
         [self startCanvasAnimation];
     }
 }
 
-- (void)setDefaultValues {
-    
-    if(!self.type)
-        self.type = _defaultAnimationType;
-    if(!self.duration)
-        self.duration = _defaultDuration;
-    if(!self.delay)
-        self.delay = _defaultDelay;
-}
-
 - (void)startCanvasAnimation {
     
-    Class <CSAnimation> class = [CSAnimation classForAnimationType:self.type];
+    self.animationIterator = 0;
     
-    [class performAnimationOnView:self duration:self.duration delay:self.delay onFinished:^{
-        [self animationDidFinish];
-    }];
+    [self performAnimation];
 
     [super startCanvasAnimation];
 }
 
-- (void) animationDidFinish {
+- (void) performAnimation {
     
+    if (self.animationIterator >= self.typeArray.count)
+        return;
     
-}
-
-# pragma mark - Default values
-
-static CSAnimationType _defaultAnimationType = @"fadeIn";
-static NSTimeInterval _defaultDelay = 0;
-static NSTimeInterval _defaultDuration = 0.5;
-
-+ (CSAnimationType) defaultAnimationType {
-    return _defaultAnimationType;
-}
-+ (void) setDefaultAnimationType:(CSAnimationType)pDefaultAnimationType {
-    _defaultAnimationType = pDefaultAnimationType;
-}
-
-+ (NSTimeInterval) defaultDelay {
-    return _defaultDelay;
-}
-+ (void) setDefaultDelay:(NSTimeInterval)pDefaultDelay {
-    _defaultDelay = pDefaultDelay;
-}
-
-+ (NSTimeInterval) defaultDuration {
-    return _defaultDuration;
-}
-+ (void) setDefaultDuration:(NSTimeInterval)pDefaultDuration {
-    _defaultDuration = pDefaultDuration;
-}
-
-@end
-
-
-# pragma mark - Category
-
-@implementation UIView (CSAnimationView)
-
-- (void)startCanvasAnimation {
-    [[self subviews] enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        [obj startCanvasAnimation];
+    Class <CSAnimation> class = [CSAnimation classForAnimationType:[self getTypeForIndex:self.animationIterator]];
+    
+    [class performAnimationOnView:self
+                         duration:[self getDurationForIndex:self.animationIterator]
+                            delay:[self getDelayForIndex:self.animationIterator]
+                       onFinished:^{
+        [self performAnimation];
     }];
+    
+    self.animationIterator ++;
+}
+
+# pragma mark - Setters
+
+- (void) setType:(NSString *)type {
+    self.typeArray = [type componentsSeparatedByString:@";"];
+}
+- (void) setDelay:(NSString *)delay {
+    self.delayArray = [delay componentsSeparatedByString:@";"];
+}
+- (void) setDuration:(NSString *)duration {
+    self.durationArray = [duration componentsSeparatedByString:@";"];
+}
+
+# pragma mark - Array getters
+
+- (NSString*) getTypeForIndex: (int) index {
+    
+    if (!self.typeArray || index >= self.typeArray.count)
+        return CSAnimationView.defaultAnimationType;
+    
+    return [self.typeArray objectAtIndex:index];
+}
+- (NSTimeInterval) getDelayForIndex: (int) index {
+    
+    if (!self.delayArray || index >= self.delayArray.count)
+        return CSAnimationView.defaultDelay;
+    
+    return [[self.delayArray objectAtIndex:index] doubleValue];
+}
+- (NSTimeInterval) getDurationForIndex: (int) index {
+    
+    if (!self.durationArray || index >= self.durationArray.count)
+        return CSAnimationView.defaultDuration;
+    
+    return [[self.durationArray objectAtIndex:index] doubleValue];
 }
 
 @end
