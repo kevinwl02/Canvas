@@ -39,7 +39,7 @@ extern NSString *const CSAnimationExceptionMethodNotImplemented;
 @property (nonatomic) NSTimeInterval duration;
 @property (nonatomic) NSTimeInterval delay;
 
-+ (void)performAnimationOnView:(UIView *)view duration:(NSTimeInterval)duration delay:(NSTimeInterval)delay onFinished:(void (^)())animationDidFinish;
++ (void)performAnimationOnView:(UIView *)view duration:(NSTimeInterval)duration delay:(NSTimeInterval)delay distance:(float)distance onFinished:(void (^)())animationDidFinish;
 
 @end
 
