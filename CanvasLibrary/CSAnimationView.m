@@ -33,9 +33,16 @@
     
     Class <CSAnimation> class = [CSAnimation classForAnimationType:self.type];
     
-    [class performAnimationOnView:self duration:self.duration delay:self.delay];
+    [class performAnimationOnView:self duration:self.duration delay:self.delay onFinished:^{
+        [self animationDidFinish];
+    }];
 
     [super startCanvasAnimation];
+}
+
+- (void) animationDidFinish {
+    
+    
 }
 
 # pragma mark - Default values
