@@ -52,8 +52,8 @@ NSString * const kSubelementSeparator = @":";
         [class performAnimationOnView:self
                              duration:[self getDurationForIndex:self.animationIterator]
                                 delay:[self getDelayForIndex:self.animationIterator]
-                             distanceX:[[distance2D objectAtIndex:0] floatValue]
-                            distanceY:[[distance2D objectAtIndex:1] floatValue]
+                             distanceX:[self getDistanceFloatValue:[distance2D objectAtIndex:0]]
+                            distanceY:[self getDistanceFloatValue:[distance2D objectAtIndex:1]]
                            onFinished:^{
                                [self performAnimation];
                            }];
@@ -115,7 +115,7 @@ NSString * const kSubelementSeparator = @":";
         return CSAnimationView.defaultDistance;
     
     NSString *distance = [self.distanceArray objectAtIndex:index];
-    return [distance floatValue];
+    return [self getDistanceFloatValue:distance];
 }
 - (NSArray *) getDistanceComponentsForIndex: (int) index {
     if (!self.distanceArray || index >= self.distanceArray.count)
@@ -134,6 +134,13 @@ NSString * const kSubelementSeparator = @":";
     
     inputString = [inputString stringByReplacingOccurrencesOfString:@" " withString:@""];
     return inputString;
+}
+
+- (float) getDistanceFloatValue: (NSString *) distance {
+    if([distance isEqualToString:@""])
+        return CSAnimationView.defaultDistance;
+    
+    return [distance floatValue];
 }
 
 @end
