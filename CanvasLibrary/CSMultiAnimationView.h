@@ -17,4 +17,6 @@
 @property (nonatomic, copy) NSString *distance;
 @property (nonatomic) BOOL pause;  // If set, animation wont starts on awakeFromNib
 
+- (void)startCanvasAnimation;
+
 @end
